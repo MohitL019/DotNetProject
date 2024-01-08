@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\MohitProject.Component.props" />
+</Project>

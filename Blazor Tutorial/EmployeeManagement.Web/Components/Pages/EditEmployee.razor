@@ -1,0 +1,57 @@
+﻿@page "/editemployee/{id}"
+@page "/editemployee"
+@using MohitProject.Component
+@inherits EditEmployeeBase
+
+<EditForm Model="@EditEmployeeModel" OnValidSubmit="HandleValidSubmit">
+    <ObjectGraphDataAnnotationsValidator/>
+    <h3>@PageHeaderText</h3>
+    <ValidationSummary/>
+   
+    <MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                  @bind-Value="EditEmployeeModel.FirstName" For="@(()=>EditEmployeeModel.FirstName)" />
+                <MudTextField Label="Last name" HelperText="Max. 8 characters"
+                                  @bind-Value="EditEmployeeModel.LastName" For="@(()=>EditEmployeeModel.LastName)" />
+                <MudTextField Label="Email" Class="mt-3"
+                                  @bind-Value="EditEmployeeModel.Email" For="@(()=>EditEmployeeModel.Email)" />
+                <MudTextField Label="Confirm Email" Class="mt-3"
+                                  @bind-Value="EditEmployeeModel.ConfirmEmail" For="@(()=>EditEmployeeModel.ConfirmEmail)" />
+                    <MudDatePicker Label="Date of Birth" @bind-Date="EditEmployeeModel.DateOfBirth" />
+                    <MudSelect Label="Gender" @bind-Value="EditEmployeeModel.Gender">
+                        @foreach (var gender in Enum.GetValues(typeof(Gender)).Cast<Gender>())
+                        {
+                            <MudSelectItem Value="gender">@gender</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSelect Label="Department" @bind-Value="EditEmployeeModel.DepartmentId">
+                        @foreach (var dept in Departments)
+                        {
+                            <MudSelectItem Value="dept.DepartmentId">@dept.DepartmentName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudCardContent>
+                            
+        </MudCard>
+        </MudItem>
+        </MudGrid>
+    <div>
+    <ImageUpload />
+    </div>
+   
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
+
+   
+    @if (EditEmployeeModel.EmployeeId > 0)
+    {
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Delete_Click">Delete</MudButton>
+    }
+</EditForm>
+<Confirm @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"
+    ConfirmationMessage=@($"Are you sure you want to delete \"{EditEmployeeModel.FirstName}\"")></Confirm>
+@code {
+    DateTime? date = DateTime.Today;
+    }

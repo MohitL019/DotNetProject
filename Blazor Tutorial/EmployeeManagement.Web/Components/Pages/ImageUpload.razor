@@ -1,0 +1,47 @@
+﻿<h3>Image Upload</h3>
+
+<input type="file" onchange="(e) => HandleFileSelected(e)" />
+<br />
+
+@if (imageModel != null)
+{
+    <div>
+        <h4>Uploaded Image</h4>
+        <img src="@(GetImageSource())" alt="Uploaded Image" />
+    </div>
+}
+
+@code {
+    private ImageUploadBase imageModel;
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+
+        if (imageFile != null)
+        {
+            imageModel = new ImageUploadBase
+                {
+                    FileName = imageFile.Name,
+                    ContentType = imageFile.ContentType
+                };
+
+            using (var stream = imageFile.OpenReadStream())
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memoryStream);
+                    imageModel.ImageData = memoryStream.ToArray();
+                }
+            }
+
+            // Perform additional actions or trigger events if needed
+        }
+    }
+
+    private string GetImageSource()
+    {
+        var imageBase64 = Convert.ToBase64String(imageModel.ImageData);
+        return $"data:{imageModel.ContentType};base64,{imageBase64}";
+    }
+}

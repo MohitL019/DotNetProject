@@ -1,0 +1,30 @@
+﻿
+<MudNavMenu>
+    <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+    <Authorized>
+            <MudNavLink Href="" Match="NavLinkMatch.All">Home</MudNavLink>
+            <MudNavLink Href="/editEmployee" @onclick="HandleClick" Match="NavLinkMatch.Prefix">Create</MudNavLink>
+            <MudNavLink Href="/editemployee/1" Match="NavLinkMatch.Prefix">Edit</MudNavLink>
+            <MudNavLink Href="/Identity/Account/Logout" Match="NavLinkMatch.Prefix">Logout @context.User.Identity.Name</MudNavLink>
+    </Authorized>
+    <NotAuthorized>
+            <MudNavLink Href="/Identity/Account/Login" Match="NavLinkMatch.Prefix">Login</MudNavLink>
+    </NotAuthorized>
+    
+    </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+    
+</MudNavMenu>
+@* href ="/Identity/Account/Login" *@
+
+@code{
+    @inject NavigationManager NavigationManager;
+
+    private void HandleClick()
+    {
+        NavigationManager.NavigateTo("editemployee",true);
+    }
+    private void NavigateToLogin()
+    {
+        NavigationManager.NavigateTo("/Identity/Account/Login");
+    }
+}
